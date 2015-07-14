@@ -3,15 +3,24 @@ ZX Spectrum BASIC httpd Server
 
 Finally, you can write CGI scripts for serving web pages in good old ZX Spectrum BASIC.
 
-To run from the Docker repository:
+## Run with Docker
 
-    **NOT WORKING YET**
+    # Get Docker
     sudo apt-get install docker.io
-    docker run -p 80:80 -p 443:443 -v /home/jdoe/mysite/:/var/www/ -d andybalaam/spectrum-basic-httpd
-    **NOT WORKING YET**
+    
+    # Write some ZX Spectrum BASIC code for dealing with requests
+    mkdir $HOME/zx
+    echo '1000 LPRINT "HTTP/1.0 200 OK"' > $HOME/zx
+    docker run -p 80:80 -v $HOME/zx:/var/www/ -d andybalaam/spectrum-basic-httpd
 
-To run without Docker, install Apache HTTPD and configure it to use spectrum-basic.cgi as a CGI-handler for .basic files, with something like this:
+    # In another terminal, try it out
+    curl -v http://localhost:80
 
+## Run without Docker
+
+* Compile BAS2TAP from https://github.com/andybalaam/bas2tap and put the exe in /bas2tap/bas2tap
+* Install Apache 2 web server
+* Configure Apache to use the spectrum-basic.cgi file for .basic files.  Something like this:
     AddHandler spectrum-basic .basic
     Action spectrum-basic /cgi-bin/spectrum-basic.cgi
 

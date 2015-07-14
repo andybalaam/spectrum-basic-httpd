@@ -1,0 +1,3 @@
+1000 LPRINT "Content-type: text/html"
+1010 LPRINT ""
+1020 LPRINT "Hello, world!"
