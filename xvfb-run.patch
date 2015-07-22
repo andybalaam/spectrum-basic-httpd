@@ -1,0 +1,11 @@
+--- /usr/bin/xvfb-run	2015-02-12 14:51:34.000000000 +0000
++++ xvfb-run	2015-07-22 04:11:25.563383323 +0100
+@@ -165,7 +165,7 @@
+     (trap '' USR1; exec Xvfb ":$SERVERNUM" $XVFBARGS $LISTENTCP -auth $AUTHFILE >>"$ERRORFILE" 2>&1) &
+     XVFBPID=$!
+ 
+-    wait || :
++    sleep 0.2
+     if kill -0 $XVFBPID 2>/dev/null; then
+         break
+     elif [ -n "$AUTONUM" ]; then

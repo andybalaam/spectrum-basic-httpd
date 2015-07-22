@@ -5,16 +5,17 @@ Finally, you can write CGI scripts for serving web pages in good old ZX Spectrum
 
 ## Run with Docker
 
-    # Get Docker
-    sudo apt-get install docker.io
-    
-    # Write some ZX Spectrum BASIC code for dealing with requests
-    mkdir $HOME/zx
-    echo '1000 LPRINT "HTTP/1.0 200 OK"' > $HOME/zx
-    docker run -p 80:80 -v $HOME/zx:/var/www/ -d andybalaam/spectrum-basic-httpd
+Get Docker:
 
-    # In another terminal, try it out
-    curl -v http://localhost:80
+    wget -qO- https://get.docker.com/ | sh
+
+Run the server:
+
+    make run
+
+In another terminal, try it out:
+
+    curl -v http://localhost:80/hello.basic
 
 ## Run without Docker
 
@@ -23,4 +24,16 @@ Finally, you can write CGI scripts for serving web pages in good old ZX Spectrum
 * Configure Apache to use the spectrum-basic.cgi file for .basic files.  Something like this:
     AddHandler spectrum-basic .basic
     Action spectrum-basic /cgi-bin/spectrum-basic.cgi
+* Put your .basic files into /var/www/html
+* Start Apache
+* Navigate to e.g. http://localhost:80/hello.basic
+
+## TODO
+
+- Docs on a derived docker container that allows you to drop in your own .basic files
+
+- Support multiple simultaneous connections by using xvfb-run -a, and
+  somehow kill the right Xvfb at the end.  Alternatively,
+  kill the right fuse instance, and Xvfb and xvfb-run should get killed
+  automatically.  Alternatively, kill the whole tree from xvfb-run down.
 
