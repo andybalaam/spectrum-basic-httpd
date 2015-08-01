@@ -60,6 +60,7 @@ COPY spectrum-basic.cgi  /usr/lib/cgi-bin/
 
 # Example basic programs
 COPY hello.basic /var/www/html/
+COPY hello-name.basic /var/www/html/
 
 # Useful if you make run-interactive
 COPY startapache /

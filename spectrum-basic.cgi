@@ -18,9 +18,58 @@ XERR=/tmp/xvfb-run-errors.txt
 
 rm -f $BAS
 
-echo '1000 LPRINT "Content-type: text/html"' >> $BAS
-echo '1010 LPRINT ""' >> $BAS
-echo '1020 LPRINT "Hello"' >> $BAS
+# Collect the meta-variables into an array
+declare -a META_VARS=(
+    "${AUTH_TYPE}"
+    "${CONTENT_LENGTH}"
+    "${CONTENT_TYPE}"
+    "${GATEWAY_INTERFACE}"
+    "${PATH_INFO}"
+    "${PATH_TRANSLATED}"
+    "${QUERY_STRING}"
+    "${REMOTE_ADDR}"
+    "${REMOTE_HOST}"
+    "${REMOTE_IDENT}"
+    "${REMOTE_USER}"
+    "${REQUEST_METHOD}"
+    "${SCRIPT_NAME}"
+    "${SERVER_NAME}"
+    "${SERVER_PORT}"
+    "${SERVER_PROTOCOL}"
+    "${SERVER_SOFTWARE}"
+)
+
+# Collect our stdin into an array
+declare -a INPUT
+while read LINE; do
+{
+    INPUT[${#INPUT[@]}]=${LINE}
+}; done
+
+NUM=10
+
+function string_line()
+{
+    echo ${NUM}' DATA "'$(echo -n "$1" | sed 's/"/""/g')'"' >> $BAS
+    NUM=$((${NUM} + 10))
+}
+function int_line()
+{
+    echo ${NUM}' DATA '$1 >> $BAS
+    NUM=$((${NUM} + 10))
+}
+
+# Write the meta-variables as DATA statements, starting with how many there are
+int_line ${#META_VARS[@]}
+for MV in "${META_VARS[@]}"; do string_line $MV; done
+
+# Write the stdin as DATA statements, starting with how many lines there are
+int_line ${#INPUT[@]}
+for INP in "${INPUT[@]}"; do string_line $INP; done
+
+# Write the program we have been told to run into the program
+# (Note the feeble attempt to prevent path traversal attacks)
+cat /var/www/html${PATH_INFO/..//g} >> $BAS
 
 echo '9999 LPRINT "'$END_MARKER'"' >> $BAS
 

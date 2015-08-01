@@ -1,0 +1,8 @@
+1000 LPRINT "Content-type: text/html"
+1010 LPRINT ""
+1100 READ n
+1110 REM    throw away 6 metavars - the 7th is QUERY_STRING
+1120 READ z$, z$, z$, z$, z$, z$
+1130 READ q$
+1140 LPRINT "Hello, "; q$
+
