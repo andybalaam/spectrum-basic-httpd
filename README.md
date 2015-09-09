@@ -28,6 +28,10 @@ In another terminal, try it out:
 * Start Apache
 * Navigate to e.g. http://localhost:80/hello.basic
 
+## Explanation
+
+http://www.artificialworlds.net/blog/2015/09/09/zx-spectrum-basic-web-server/
+
 ## TODO
 
 - Docs on a derived docker container that allows you to drop in your own .basic files
